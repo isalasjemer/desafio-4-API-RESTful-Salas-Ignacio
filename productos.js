@@ -1,7 +1,11 @@
 const { Router } = require('express');
 const router = Router();
 
-const productos = [{ "id": 1, "title": "Charango", "price": "5000", "thumbnail": "url.com/charango" }, { "id": 2, "title": "Guitarra", "price": "25000", "thumbnail": "url.com/guitarra" }, { "id": 3, "title": "Ukelele", "price": "10000", "thumbnail": "url.com/ukelele" }];
+const productos = [
+    { "id": 1, "title": "Charango", "price": "5000", "thumbnail": "url.com/charango" },
+    { "id": 2, "title": "Guitarra", "price": "25000", "thumbnail": "url.com/guitarra" },
+    { "id": 3, "title": "Ukelele", "price": "10000", "thumbnail": "url.com/ukelele" }
+];
 
 //  devuelve todos los productos
 router.get('/', (req, res) => {
@@ -12,21 +16,44 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     const foundProduct = productos.filter(product => product.id === parseInt(id))
-    console.log(foundProduct)
-    if(foundProduct.length > 0){
+    if (foundProduct.length > 0) {
         res.json(foundProduct)
-    }else{
-        res.json({'error': 'Producto no encontrado'})
+    } else {
+        res.json({ 'error': 'Producto no encontrado' })
     }
 })
 
-
-
+// recibe y agrega un producto, y lo devuelve con su id asignado
 router.post('/', (req, res) => {
-    const producto = req.body;
-    console.log(producto)
-    productos.push(producto);
-    res.send({ mensaje: 'producto agregado con exito' });
+    const newProduct = req.body;
+    const newId = productos.length + 1;
+    const object = {
+        "id": newId,
+        "title": newProduct.title,
+        "price": newProduct.price,
+        "thumbnail": newProduct.thumbnail
+    }
+    productos.push(object)
+    res.json({ mensaje: 'producto agregado con exito, ID: ' + newId });
 });
+
+// recibe y actualiza un producto según su id
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const updatedProduct = req.body;
+    const oldProductIndex = productos.indexOf(productos.find(product => product.id === parseInt(id)));
+    if (oldProductIndex != -1) {
+        const object = {
+            "id": parseInt(id),
+            "title": updatedProduct.title,
+            "price": updatedProduct.price,
+            "thumbnail": updatedProduct.thumbnail
+        }
+        productos[oldProductIndex] = object;
+        res.json({ mensaje: 'Producto con el ID ' + id + ' actualizado con exito' })
+    } else {
+        res.json({ 'error': 'Producto no encontrado' })
+    }
+})
 
 module.exports = router;
