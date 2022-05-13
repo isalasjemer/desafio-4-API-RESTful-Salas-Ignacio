@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public')) 
 
 // Routes
-app.use('/productos', routesProductos);
+app.use('/api/productos', routesProductos);
 
 //Server
 const PORT = 8080;
