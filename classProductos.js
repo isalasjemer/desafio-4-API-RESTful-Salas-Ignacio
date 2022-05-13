@@ -1,4 +1,6 @@
 
+//Implementacion de la API en una clase separada, utilizando un array como soporte de persistencia en memoria.
+
 class Productos {
     productos = [
         { id: 1, title: "Charango", price: 5000, thumbnail: "url.com/charango" },
@@ -13,15 +15,12 @@ class Productos {
         if (lastProduct) {
             id = lastProduct.id + 1;
         }
-
         return id;
     }
 
     newProduct(newData) {
         newData.id = this.newId();
-
         this.productos.push(newData);
-
         return this.productos;
     }
 
@@ -31,18 +30,14 @@ class Productos {
 
     update(id, data) {
         let updatedProduct;
-
         const updatedProducts = this.productos.map(product => {
             if (product.id === parseInt(id)) {
                 product = Object.assign(product, data);
-
                 updatedProduct = product;
             }
             return product;
         });
-
         this.productos = updatedProducts;
-
         return updatedProduct;
     }
 
@@ -54,9 +49,7 @@ class Productos {
         const newProducts = this.productos.filter(
             product => product.id !== parseInt(id)
         );
-
         this.productos = newProducts;
-
         return this.productos;
     }
 }
