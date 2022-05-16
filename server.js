@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const routesProductos = require('./productos')
+const routesProductos = require('./routesProductos')
 
 app.use(morgan('dev'));
 app.use(express.json());
